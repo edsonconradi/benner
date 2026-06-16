@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="Benner.Microondas.Domain/Benner.Microondas.Domain.csproj" Id="9303b88d-6574-4860-b2df-07344b477cf5" />
+  <Project Path="Benner.Microondas.tests/Benner.Microondas.tests.csproj" Id="d59816e4-554e-4fa8-82c1-151935508d73" />
+  <Project Path="Benner.Microondas.Web/Benner.Microondas.Web.csproj" />
+</Solution>

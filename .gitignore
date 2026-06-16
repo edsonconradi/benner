@@ -1,0 +1,38 @@
+# Build
+bin/
+obj/
+[Bb]uild/
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+
+# Visual Studio
+.vs/
+*.user
+*.rsuser
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Rider / VS Code
+.idea/
+.vscode/
+
+# Testes / cobertura
+TestResults/
+coverage/
+*.coverage
+*.coveragexml
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
+
+# Pacotes / logs
+*.nupkg
+*.snupkg
+*.log
+
+# Arquivos gerados pela aplicação
+App_Data/*.json
