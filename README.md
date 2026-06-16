@@ -1,26 +1,42 @@
-# Project Empty Template
+# Micro-ondas Digital
 
-Este é um repositório de exemplo para você começar a desenvolver a questão, leia com atenção os requisitos do enunciado da questão na plataforma e seguia as boas práticas sobre como utilizar este repositório.
+Projeto ASP.NET Core MVC para o desafio de simulação de um micro-ondas digital.
 
+## Tecnologias
 
-## Readme do Repositório
+- C#
+- .NET 10
+- ASP.NET Core MVC
+- NUnit
 
-- Deve conter o título do projeto
-- Uma descrição sobre o projeto em frase
-- Deve conter uma lista com linguagem, framework e/ou tecnologias usadas
-- Como instalar e usar o projeto (instruções)
-- Não esqueça o [.gitignore](https://www.toptal.com/developers/gitignore)
-- Se está usando github pessoal, referencie que é um challenge by coodesh:  
+## O que foi implementado
 
->  This is a challenge by [Coodesh](https://coodesh.com/)
+- Aquecimento manual com tempo de 1 a 120 segundos.
+- Potência de 1 a 10, usando 10 quando o campo não é informado.
+- Início rápido de 30 segundos.
+- Pausar/cancelar limpando a operação atual.
+- Programas pré-definidos com tempo, potência, alimento, instruções e caractere próprio.
+- Cadastro de programas personalizados, validando nome e caractere repetidos.
+- Um rascunho do nível 4: os programas personalizados ficam salvos em arquivo JSON.
+- Testes unitários para as regras principais do domínio.
 
-## Finalização e Instruções para a Apresentação
+## Como executar
 
-1. Adicione o link do repositório com a sua solução na questão na plataforma
-2. Verifique se o Readme está bom e faça o commit final em seu repositório;
-3. Envie e aguarde as instruções para seguir. Caso o teste tenha apresentação de vídeo, dentro da tela de entrega será possível gravar após adicionar o link do repositório. Sucesso e boa sorte. =)
+```bash
+dotnet restore
+dotnet run --project Benner.Microondas.Web
+```
 
+Depois abra o endereço informado no terminal.
 
-## Suporte
+## Como rodar os testes
 
-Para tirar dúvidas sobre o processo envie uma mensagem diretamente a um especialista no chat da plataforma. 
+```bash
+dotnet test
+```
+
+## Observações
+
+A persistência dos programas personalizados foi deixada em arquivo JSON para manter a solução simples. Na aplicação o arquivo é gravado em `App_Data`; nos testes é usado um repositório em memória.
+
+This is a challenge by [Coodesh](https://coodesh.com/)
