@@ -1,0 +1,164 @@
+@model Benner.Microondas.Web.Models.MicroondasViewModel
+
+@{
+    ViewData["Title"] = "Micro-ondas";
+}
+
+<div class="text-center mb-4">
+    <h1>Micro-ondas Digital</h1>
+    <p class="text-muted">Informe o tempo a potência e acompanhe o aquecimento</p>
+</div>
+
+@if (!string.IsNullOrWhiteSpace(Model.Mensagem))
+{
+    <div class="alert alert-info">@Model.Mensagem</div>
+}
+
+<div class="row g-4">
+    <div class="col-md-6">
+        <div class="card h-100">
+            <div class="card-header fw-bold">Aquecimento manual</div>
+            <div class="card-body">
+                <form asp-action="Iniciar" method="post">
+                    <div class="mb-3">
+                        <label class="form-label">Tempo em segundos</label>
+                        <input class="form-control" asp-for="TempoEmSegundos" placeholder="1 até 120" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Potência</label>
+                        <input class="form-control" asp-for="Potencia" placeholder="1 até 10. Vazio vira 10." />
+                    </div>
+
+                    <button class="btn btn-primary" type="submit">Iniciar</button>
+                    <button class="btn btn-outline-danger" formaction="/Home/PausarOuCancelar" formmethod="post">Pausar / Cancelar</button>
+                </form>
+
+                <form asp-action="InicioRapido" method="post" class="mt-3">
+                    <button class="btn btn-outline-secondary" type="submit">Início rápido +30s</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card h-100">
+            <div class="card-header fw-bold">Programas prontos e personalizados</div>
+            <div class="card-body">
+                <form asp-action="IniciarPrograma" method="post">
+                    <div class="mb-3">
+                        <label class="form-label">Programa</label>
+                        <select class="form-select" asp-for="ProgramaSelecionado">
+                            <option value="">Selecione</option>
+                            @foreach (var programa in Model.Programas)
+                            {
+                                var tipo = programa.Personalizado ? "personalizado" : "padrão";
+                                <option value="@programa.Nome">
+                                    @programa.Nome - @programa.Alimento (@tipo)
+                                </option>
+                            }
+                        </select>
+                    </div>
+
+                    <button class="btn btn-success" type="submit">Iniciar programa</button>
+                </form>
+
+                <hr />
+                <h5>Cadastrar novo programa</h5>
+
+                <form asp-action="CadastrarPrograma" method="post">
+                    <div class="row g-2">
+                        <div class="col-md-6">
+                            <label class="form-label">Nome</label>
+                            <input class="form-control" asp-for="NovoNome" placeholder="Ex: Lasanha" />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Alimento</label>
+                            <input class="form-control" asp-for="NovoAlimento" placeholder="Ex: Lasanha congelada" />
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Tempo</label>
+                            <input class="form-control" asp-for="NovoTempoEmSegundos" placeholder="segundos" />
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Potência</label>
+                            <input class="form-control" asp-for="NovaPotencia" placeholder="1 a 10" />
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Símbolo</label>
+                            <input class="form-control" asp-for="NovoCaractere" maxlength="1" placeholder="Ex: !" />
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Instruções</label>
+                            <textarea class="form-control" asp-for="NovasInstrucoes" rows="2"></textarea>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-outline-primary mt-3" type="submit">Salvar programa</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (Model.Programas.Any())
+{
+    <div class="card mt-4">
+        <div class="card-header fw-bold">Programas cadastrados</div>
+        <div class="table-responsive">
+            <table class="table table-striped mb-0">
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Alimento</th>
+                        <th>Tempo</th>
+                        <th>Potencia</th>
+                        <th>Simbolo</th>
+                        <th>Tipo</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var programa in Model.Programas)
+                    {
+                        <tr>
+                            <td>@programa.Nome</td>
+                            <td>@programa.Alimento</td>
+                            <td>@programa.TempoEmSegundos s</td>
+                            <td>@programa.Potencia</td>
+                            <td>@programa.CaractereAquecimento</td>
+                            <td>@(programa.Personalizado ? "Personalizado" : "Padrão")</td>
+                            <td class="text-end">
+                                @if (programa.Personalizado)
+                                {
+                                    <form asp-action="ExcluirPrograma" method="post" class="d-inline">
+                                        <input type="hidden" name="nome" value="@programa.Nome" />
+                                        <button class="btn btn-sm btn-outline-danger" type="submit">Excluir</button>
+                                    </form>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+
+@if (!string.IsNullOrWhiteSpace(Model.ResultadoAquecimento))
+{
+    <div class="card mt-4">
+        <div class="card-header fw-bold">Resultado</div>
+        <div class="card-body">
+            <p><strong>Tempo:</strong> @Model.TempoEmSegundos segundos</p>
+            <p><strong>Potência:</strong> @Model.Potencia</p>
+
+            @if (!string.IsNullOrWhiteSpace(Model.Instrucoes))
+            {
+                <p><strong>Instruções:</strong> @Model.Instrucoes</p>
+            }
+
+            <textarea class="form-control" rows="12" readonly>@Model.ResultadoAquecimento</textarea>
+        </div>
+    </div>
+}
